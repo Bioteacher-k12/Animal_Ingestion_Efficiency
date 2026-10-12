@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scaffolded Animal Ingestion & Efficiency Simulator</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .tab-btn.active {
+      border-bottom: 3px solid #0284c7;
+      color: #0284c7;
+      font-weight: 600;
+      background-color: #f0f9ff;
+    }
+    .scaffold-step {
+      border-left: 3px solid #cbd5e1;
+      padding-left: 1rem;
+      transition: all 0.2s ease;
+    }
+    .scaffold-step.active-step {
+      border-left-color: #0284c7;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-sky-800 via-indigo-800 to-slate-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="flex items-center space-x-3">
+          <span class="bg-sky-500/20 p-2 rounded-lg border border-sky-400/30">
+            <i class="fa-solid fa-calculator text-sky-300 text-xl"></i>
+          </span>
+          <h1 class="text-xl font-bold tracking-tight">Animal Ingestion & Energy Efficiency Lab</h1>
+        </div>
+        <p class="text-sky-200 text-xs mt-1">Guided Scaffolding, Mass Balances & Metabolic Efficiency</p>
+      </div>
+      
+      <!-- Progress Tracker -->
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 min-w-[220px]">
+        <div class="flex justify-between text-xs font-semibold mb-1">
+          <span>Lab Completion</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="w-full bg-slate-950/40 rounded-full h-2 overflow-hidden">
+          <div id="progress-bar" class="bg-sky-400 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex space-x-2 overflow-x-auto py-2 scrollbar-none">
+        <button onclick="switchTab('tab-model-a', this)" class="tab-btn active px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 whitespace-nowrap flex items-center space-x-2">
+          <i class="fa-solid fa-scale-balanced text-amber-600"></i>
+          <span>Model A: Mass Balance</span>
+        </button>
+        <button onclick="switchTab('tab-model-b', this)" class="tab-btn px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 whitespace-nowrap flex items-center space-x-2">
+          <i class="fa-solid fa-bolt text-blue-600"></i>
+          <span>Model B: Energy Pathways</span>
+        </button>
+        <button onclick="switchTab('tab-calculations', this)" class="tab-btn px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 whitespace-nowrap flex items-center space-x-2">
+          <i class="fa-solid fa-list-check text-indigo-600"></i>
+          <span>Efficiency Workbench</span>
+        </button>
+        <button onclick="switchTab('tab-sandbox', this)" class="tab-btn px-4 py-2 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 whitespace-nowrap flex items-center space-x-2">
+          <i class="fa-solid fa-sliders text-teal-600"></i>
+          <span>Ecosystem Sandbox</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+
+    <!-- ================= TAB 1: MODEL A (MASS BALANCE) ================= -->
+    <section id="tab-model-a" class="tab-content space-y-6">
+      
+      <!-- Instructions Banner -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start space-x-3 text-amber-900 text-xs">
+        <i class="fa-solid fa-circle-info text-amber-600 text-base mt-0.5"></i>
+        <div>
+          <strong class="font-bold">Model A Task:</strong> Refer to the Model A diagram above to fill out the table below. Use the Conservation of Mass principle to calculate "What's missing?" for Organism A and Organism B.
+        </div>
+      </div>
+
+      <!-- Guided Student Scaffolded Table -->
+      <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-5">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-slate-900">Refer to Model A above to fill out the table below:</h3>
+          <button onclick="toggleHint('hint-model-a')" class="text-xs text-sky-600 hover:text-sky-800 font-semibold flex items-center">
+            <i class="fa-solid fa-lightbulb mr-1"></i> Need a Hint?
+          </button>
+        </div>
+
+        <!-- Rendered Formula Hint -->
+        <div id="hint-model-a" class="hidden bg-sky-50 border border-sky-200 p-3 rounded-lg text-xs text-sky-900 space-y-2">
+          <strong class="font-bold">Conservation of Mass Formula:</strong>
+          <div class="bg-white p-2 rounded border border-sky-200 font-mono text-center">
+            Amount Ingested = Biomass Maintained + Egested Waste + What's Missing
+          </div>
+          <p class="text-slate-600">Rearrange to solve for missing mass: <strong>What's Missing = Ingested − (Biomass + Waste)</strong></p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <thead class="bg-slate-800 text-white uppercase text-[11px]">
+              <tr>
+                <th class="p-3">Parameter (kg)</th>
+                <th class="p-3 text-center">Organism A</th>
+                <th class="p-3 text-center">Organism B</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+              <tr>
+                <td class="p-3 font-medium">Amount Ingested (kg)</td>
+                <td class="p-3 text-center">
+                  <input id="mA-ingest" type="number" step="0.1" placeholder="Type value" class="w-28 text-center border p-1.5 rounded font-mono focus:ring-1 focus:ring-sky-500">
+                </td>
+                <td class="p-3 text-center">
+                  <input id="mB-ingest" type="number" step="0.1" placeholder="Type value" class="w-28 text-center border p-1.5 rounded font-mono focus:ring-1 focus:ring-sky-500">
+                </td>
+              </tr>
+              <tr>
+                <td class="p-3 font-medium">Amount needed to maintain biomass (kg)</td>
+                <td class="p-3 text-center">
+                  <input id="mA-biomass" type="number" step="0.1" placeholder="Type value" class="w-28 text-center border p-1.5 rounded font-mono focus:ring-1 focus:ring-sky-500">
+                </td>
+                <td class="p-3 text-center">
+                  <input id="mB-biomass" type="number" step="0.1" placeholder="Type value" class="w-28 text-center border p-1.5 rounded font-mono focus:ring-1 focus:ring-sky-500">
+                </td>
+              </tr>
+              <tr>
+                <td class="p-3 font-medium">Amount egested (kg)</td>
+                <td class="p-3 text-center">
+                  <input id="mA-waste" type="number" step="0.1" placeholder="Type value" class="w-28 text-center border p-1.5 rounded font-mono focus:ring-1 focus:ring-sky-500">
+                </td>
+                <td class="p-3 text-center">
+                  <input id="mB-waste" type="number" step="0.1" placeholder="Type value" class="w-28 text-center border p-1.5 rounded font-mono focus:ring-1 focus:ring-sky-500">
+                </td>
+              </tr>
+              <tr class="bg-indigo-50/50">
+                <td class="p-3 font-bold text-indigo-900">What's "missing"? (kg)</td>
+                <td class="p-3 text-center">
+                  <input id="mA-missing" type="number" step="0.1" placeholder="Calculate" class="w-28 text-center border border-indigo-300 p-1.5 rounded font-mono font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500">
+                </td>
+                <td class="p-3 text-center">
+                  <input id="mB-missing" type="number" step="0.1" placeholder="Calculate" class="w-28 text-center border border-indigo-300 p-1.5 rounded font-mono font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="checkModelATable()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-sm">
+            Verify Model A Answers
+          </button>
+          <span id="model-a-status" class="text-xs font-semibold"></span>
+        </div>
+      </div>
+
+      <!-- Conceptual Analysis Questions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-xs font-bold text-slate-800">What is meant by "egested waste"?</label>
+          <textarea id="q2-input" rows="2" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-sky-500" placeholder="Describe where egested waste comes from..."></textarea>
+          <button onclick="toggleAnswer('ans-2')" class="text-[11px] text-sky-600 font-semibold flex items-center hover:underline">
+            <i class="fa-solid fa-check-circle mr-1"></i> Check Explanation Key
+          </button>
+          <p id="ans-2" class="hidden text-xs bg-slate-50 p-2.5 rounded border text-slate-700 mt-1">
+            <strong>Key Concept:</strong> Egested waste consists of undigested, unabsorbed food materials (such as plant cellulose/fiber) passing directly through the digestive tract as feces.
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-xs font-bold text-slate-800">What processes accounts for the "missing" mass?</label>
+          <textarea id="q4-input" rows="2" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-sky-500" placeholder="What biological process breaks down mass into gas?"></textarea>
+          <button onclick="toggleAnswer('ans-4')" class="text-[11px] text-sky-600 font-semibold flex items-center hover:underline">
+            <i class="fa-solid fa-check-circle mr-1"></i> Check Explanation Key
+          </button>
+          <p id="ans-4" class="hidden text-xs bg-slate-50 p-2.5 rounded border text-slate-700 mt-1">
+            <strong>Key Concept:</strong> Cellular respiration breaks down organic molecules (C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub> → 6CO<sub>2</sub> + 6H<sub>2</sub>O + ATP), releasing mass as exhale gas (CO<sub>2</sub>) and water vapor.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 2: MODEL B (ENERGY PATHWAYS) ================= -->
+    <section id="tab-model-b" class="tab-content hidden space-y-6">
+      
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start space-x-3 text-blue-900 text-xs">
+        <i class="fa-solid fa-fire text-blue-600 text-base mt-0.5"></i>
+        <div>
+          <strong class="font-bold">Model B Task:</strong> Refer to the Model B energy diagram above for the Elephant and Lion. Read the values directly from the diagram to complete Question 8 below.
+        </div>
+      </div>
+
+      <!-- Fill-in-the-Blank Table (Question 8) -->
+      <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-900">8. Use Model B above to fill out the table below:</h3>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <thead class="bg-slate-800 text-white uppercase text-[11px]">
+              <tr>
+                <th class="p-3">Energy Pathway</th>
+                <th class="p-3 text-center">Elephant</th>
+                <th class="p-3 text-center">Lion</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 font-mono">
+              <tr>
+                <td class="p-3 font-sans font-medium">Food Ingested (Kcal)</td>
+                <td class="p-3 text-center"><input id="e-ingest" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+                <td class="p-3 text-center"><input id="l-ingest" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-sans font-medium">Egested waste (Kcal)</td>
+                <td class="p-3 text-center"><input id="e-waste" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+                <td class="p-3 text-center"><input id="l-waste" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-sans font-medium">Respiration (Kcal)</td>
+                <td class="p-3 text-center"><input id="e-resp" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+                <td class="p-3 text-center"><input id="l-resp" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-sans font-medium">Heat loss (Kcal)</td>
+                <td class="p-3 text-center"><input id="e-heat" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+                <td class="p-3 text-center"><input id="l-heat" type="number" placeholder="Type Kcal" class="w-28 border text-center p-1.5 rounded"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="checkModelBTable()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all">
+            Verify Model B Inputs
+          </button>
+          <span id="model-b-status" class="text-xs font-semibold"></span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 3: EFFICIENCY WORKBENCH ================= -->
+    <section id="tab-calculations" class="tab-content hidden space-y-6">
+      
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 flex items-start space-x-3 text-indigo-900 text-xs">
+        <i class="fa-solid fa-calculator text-indigo-600 text-base mt-0.5"></i>
+        <div>
+          <strong class="font-bold">Scaffolded Calculations:</strong> Work step-by-step through energy efficiency calculations for both organisms using the formula workbench below.
+        </div>
+      </div>
+
+      <!-- Question 10: Inefficiency Step-by-Step Scaffolding -->
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-base font-bold text-slate-900">Calculate the amount of potential energy that each organism does not use efficiently.</h2>
+          <p class="text-xs text-slate-600 mt-1">(Egested waste and heat loss are not an efficient use of energy)</p>
+          
+          <!-- Clean Formatted HTML Fraction Formula Callout -->
+          <div class="my-4 p-4 bg-slate-100 rounded-lg border border-slate-300 flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-3 text-xs font-semibold text-slate-800">
+            <span class="font-bold text-slate-900">Formula:</span>
+            <div class="inline-flex items-center space-x-2 font-mono">
+              <div class="inline-flex flex-col items-center border-r border-slate-300 pr-3">
+                <span class="border-b border-slate-700 pb-0.5 px-2">heat loss + egested waste</span>
+                <span class="pt-0.5 px-2">food ingested</span>
+              </div>
+              <span class="text-sm font-bold">× 100 = percentage</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Elephant Scaffolded Workbench -->
+        <div class="border rounded-xl p-4 space-y-4 bg-slate-50/50">
+          <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-list-ol text-emerald-600 mr-2"></i> a. Elephant
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="scaffold-step active-step bg-white p-3 rounded border border-slate-200">
+              <span class="block font-bold text-slate-500 mb-1">Step 1: Sum Inefficient Losses</span>
+              <div class="flex items-center space-x-1 font-mono">
+                <span>14,031 + 19,837 = </span>
+                <input id="q10-e-step1" type="number" placeholder="Sum" class="w-20 border text-center p-1 rounded">
+              </div>
+            </div>
+
+            <div class="scaffold-step bg-white p-3 rounded border border-slate-200">
+              <span class="block font-bold text-slate-500 mb-1">Step 2: Divide by Ingested Kcal</span>
+              <div class="flex items-center space-x-1 font-mono">
+                <span>33,868 ÷ 48,384 = </span>
+                <input id="q10-e-step2" type="number" step="0.001" placeholder="Decimal" class="w-20 border text-center p-1 rounded">
+              </div>
+            </div>
+
+            <div class="scaffold-step bg-white p-3 rounded border border-slate-200">
+              <span class="block font-bold text-slate-500 mb-1">Step 3: Multiply by 100</span>
+              <div class="flex items-center space-x-1 font-mono">
+                <input id="q10-e-final" type="number" step="0.1" placeholder="%" class="w-20 border text-center p-1 rounded font-bold text-emerald-700">
+                <span>%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lion Scaffolded Workbench -->
+        <div class="border rounded-xl p-4 space-y-4 bg-slate-50/50">
+          <h3 class="text-xs font-bold text-indigo-900 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-list-ol text-indigo-600 mr-2"></i> b. Lion
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="scaffold-step active-step bg-white p-3 rounded border border-slate-200">
+              <span class="block font-bold text-slate-500 mb-1">Step 1: Sum Inefficient Losses</span>
+              <div class="flex items-center space-x-1 font-mono">
+                <span>726 + 648 = </span>
+                <input id="q10-l-step1" type="number" placeholder="Sum" class="w-20 border text-center p-1 rounded">
+              </div>
+            </div>
+
+            <div class="scaffold-step bg-white p-3 rounded border border-slate-200">
+              <span class="block font-bold text-slate-500 mb-1">Step 2: Divide by Ingested Kcal</span>
+              <div class="flex items-center space-x-1 font-mono">
+                <span>1,374 ÷ 2,592 = </span>
+                <input id="q10-l-step2" type="number" step="0.001" placeholder="Decimal" class="w-20 border text-center p-1 rounded">
+              </div>
+            </div>
+
+            <div class="scaffold-step bg-white p-3 rounded border border-slate-200">
+              <span class="block font-bold text-slate-500 mb-1">Step 3: Multiply by 100</span>
+              <div class="flex items-center space-x-1 font-mono">
+                <input id="q10-l-final" type="number" step="0.1" placeholder="%" class="w-20 border text-center p-1 rounded font-bold text-indigo-700">
+                <span>%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="checkQ10Scaffold()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all">
+            Check Calculations
+          </button>
+          <span id="q10-status" class="text-xs font-semibold"></span>
+        </div>
+      </div>
+
+      <!-- Question 11 & 12 Selection -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Question 11 -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+          <h3 class="text-xs font-bold text-slate-900">Which organism is more efficient - the elephant or the lion?</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="answerQ11('elephant', this)" class="p-2 border rounded text-xs font-bold hover:bg-slate-50">the elephant</button>
+            <button onclick="answerQ11('lion', this)" class="p-2 border rounded text-xs font-bold hover:bg-slate-50">the lion</button>
+          </div>
+          <p id="q11-feedback" class="text-xs font-medium hidden p-2.5 rounded"></p>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+          <h3 class="text-xs font-bold text-slate-900">Which of the following from the elephant is directly available to the lion?</h3>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button onclick="answerQ12('Grass', this)" class="p-2 border rounded hover:bg-slate-50">Grass</button>
+            <button onclick="answerQ12('Respiration', this)" class="p-2 border rounded hover:bg-slate-50">Respiration</button>
+            <button onclick="answerQ12('Biomass', this)" class="p-2 border rounded hover:bg-slate-50">Biomass</button>
+            <button onclick="answerQ12('Waste', this)" class="p-2 border rounded hover:bg-slate-50">Waste</button>
+          </div>
+          <p id="q12-feedback" class="text-xs font-medium hidden p-2.5 rounded"></p>
+        </div>
+
+      </div>
+
+      <!-- Question 13: Scaffolded Trophic Efficiency -->
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">What percentage of the elephant’s “grass energy” is available for the lion?</h3>
+          
+          <!-- Clean Formatted HTML Fraction Formula Callout -->
+          <div class="my-3 p-3 bg-slate-100 rounded-lg border border-slate-300 flex items-center justify-center space-x-2 text-xs font-semibold text-slate-800">
+            <span class="font-bold text-slate-900">Formula:</span>
+            <div class="inline-flex items-center space-x-2 font-mono">
+              <div class="inline-flex flex-col items-center border-r border-slate-300 pr-3">
+                <span class="border-b border-slate-700 pb-0.5 px-2">Total kcal ingested − Total kcal used</span>
+                <span class="pt-0.5 px-2">Total kcal ingested</span>
+              </div>
+              <span class="text-sm font-bold">× 100 = %</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div class="bg-slate-50 p-3 rounded border">
+            <span class="block font-bold text-slate-500 mb-1">Step 1: Calculate Total Kcal Used</span>
+            <span class="font-mono">11,612 + 19,837 + 14,031 = </span>
+            <input id="q13-step1" type="number" placeholder="45480" class="w-20 border text-center p-1 rounded font-mono">
+          </div>
+          <div class="bg-slate-50 p-3 rounded border">
+            <span class="block font-bold text-slate-500 mb-1">Step 2: Calculate Stored Biomass</span>
+            <span class="font-mono">48,384 − 45,480 = </span>
+            <input id="q13-step2" type="number" placeholder="2904" class="w-20 border text-center p-1 rounded font-mono">
+          </div>
+          <div class="bg-slate-50 p-3 rounded border">
+            <span class="block font-bold text-slate-500 mb-1">Step 3: Calculate Available %</span>
+            <div class="flex items-center space-x-1 font-mono">
+              <input id="q13-final" type="number" step="0.1" placeholder="%" class="w-20 border text-center p-1 rounded font-bold text-emerald-700">
+              <span>%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="checkQ13Scaffold()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all">
+            Check Calculation
+          </button>
+          <span id="q13-status" class="text-xs font-semibold"></span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 4: ECOSYSTEM SANDBOX ================= -->
+    <section id="tab-sandbox" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-base font-bold text-slate-900">Ecosystem Trophic Efficiency Sandbox</h2>
+          <p class="text-xs text-slate-600 mt-1">Adjust food intake and metabolic parameters to observe real-time biomass storage vs. energy dissipation.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4 text-xs">
+            <h3 class="font-bold text-slate-700 uppercase tracking-wider">Parameters</h3>
+            
+            <div>
+              <div class="flex justify-between font-semibold mb-1">
+                <span>Food Ingested:</span>
+                <span id="sb-ingest-val" class="font-mono text-emerald-700">10,000 Kcal</span>
+              </div>
+              <input id="sb-ingest" type="range" min="1000" max="50000" step="1000" value="10000" oninput="updateSandbox()" class="w-full accent-emerald-600">
+            </div>
+
+            <div>
+              <div class="flex justify-between font-semibold mb-1">
+                <span>Egested Waste %:</span>
+                <span id="sb-waste-val" class="font-mono text-amber-700">35%</span>
+              </div>
+              <input id="sb-waste" type="range" min="10" max="60" step="1" value="35" oninput="updateSandbox()" class="w-full accent-amber-600">
+            </div>
+
+            <div>
+              <div class="flex justify-between font-semibold mb-1">
+                <span>Respiration & Heat %:</span>
+                <span id="sb-resp-val" class="font-mono text-blue-700">55%</span>
+              </div>
+              <input id="sb-resp" type="range" min="20" max="80" step="1" value="55" oninput="updateSandbox()" class="w-full accent-blue-600">
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 bg-slate-900 text-white p-5 rounded-xl space-y-4 flex flex-col justify-between">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Calculated Energy Budget</span>
+              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded font-mono" id="sb-efficiency-badge">Stored Biomass: 10%</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+              <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700">
+                <span class="block text-[10px] text-slate-400 font-bold uppercase">Ingested</span>
+                <span id="sb-res-ingest" class="font-mono font-bold text-white">10,000 Kcal</span>
+              </div>
+              <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700">
+                <span class="block text-[10px] text-amber-400 font-bold uppercase">Waste</span>
+                <span id="sb-res-waste" class="font-mono font-bold text-amber-300">3,500 Kcal</span>
+              </div>
+              <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700">
+                <span class="block text-[10px] text-blue-400 font-bold uppercase">Resp & Heat</span>
+                <span id="sb-res-resp" class="font-mono font-bold text-blue-300">5,500 Kcal</span>
+              </div>
+              <div class="bg-slate-800/80 p-2.5 rounded border border-slate-700">
+                <span class="block text-[10px] text-emerald-400 font-bold uppercase">Biomass</span>
+                <span id="sb-res-biomass" class="font-mono font-bold text-emerald-300">1,000 Kcal</span>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-[11px] text-slate-400 font-medium">Allocation Proportion Bar:</span>
+              <div class="w-full bg-slate-800 rounded-full h-4 overflow-hidden flex border border-slate-700">
+                <div id="sb-bar-waste" style="width: 35%" class="bg-amber-600 text-[9px] font-bold text-white flex items-center justify-center">35%</div>
+                <div id="sb-bar-resp" style="width: 55%" class="bg-blue-600 text-[9px] font-bold text-white flex items-center justify-center">55%</div>
+                <div id="sb-bar-biomass" style="width: 10%" class="bg-emerald-500 text-[9px] font-bold text-white flex items-center justify-center">10%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript Logic -->
+  <script>
+    let progressSet = new Set();
+
+    function switchTab(tabId, btn) {
+      // Hide all tab content sections
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(el => {
+        el.classList.add('hidden');
+      });
+      
+      // Remove active class from all nav buttons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(el => {
+        el.classList.remove('active');
+      });
+      
+      // Show targeted tab section
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+      
+      // Set active style on clicked button
+      if (btn) {
+        btn.classList.add('active');
+      }
+    }
+
+    function toggleHint(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function toggleAnswer(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function checkModelATable() {
+      const mAIngest = parseFloat(document.getElementById('mA-ingest').value);
+      const mABiomass = parseFloat(document.getElementById('mA-biomass').value);
+      const mAWaste = parseFloat(document.getElementById('mA-waste').value);
+      const mAMissing = parseFloat(document.getElementById('mA-missing').value);
+
+      const mBIngest = parseFloat(document.getElementById('mB-ingest').value);
+      const mBBiomass = parseFloat(document.getElementById('mB-biomass').value);
+      const mBWaste = parseFloat(document.getElementById('mB-waste').value);
+      const mBMissing = parseFloat(document.getElementById('mB-missing').value);
+
+      const status = document.getElementById('model-a-status');
+
+      const isAValid = (mAIngest === 58) && (mABiomass === 9.5) && (mAWaste === 23.8) && Math.abs(mAMissing - 24.7) < 0.2;
+      const isBValid = (mBIngest === 6.2) && (mBBiomass === 1.0) && (mBWaste === 1.6) && Math.abs(mBMissing - 3.6) < 0.2;
+
+      if (isAValid && isBValid) {
+        status.textContent = "✓ Correct! Organism A missing = 24.7 kg, Organism B missing = 3.6 kg";
+        status.className = "text-xs font-semibold text-emerald-600";
+        progressSet.add('modelA');
+      } else {
+        status.textContent = "✗ Please check your table inputs against the Model A diagram above.";
+        status.className = "text-xs font-semibold text-red-600";
+      }
+      updateProgress();
+    }
+
+    function checkModelBTable() {
+      const eI = parseFloat(document.getElementById('e-ingest').value);
+      const eW = parseFloat(document.getElementById('e-waste').value);
+      const eR = parseFloat(document.getElementById('e-resp').value);
+      const eH = parseFloat(document.getElementById('e-heat').value);
+
+      const lI = parseFloat(document.getElementById('l-ingest').value);
+      const lW = parseFloat(document.getElementById('l-waste').value);
+      const lR = parseFloat(document.getElementById('l-resp').value);
+      const lH = parseFloat(document.getElementById('l-heat').value);
+
+      const status = document.getElementById('model-b-status');
+
+      const elephantValid = (eI === 48384 && eW === 19837 && eR === 11612 && eH === 14031);
+      const lionValid = (lI === 2592 && lW === 648 && lR === 829 && lH === 726);
+
+      if (elephantValid && lionValid) {
+        status.textContent = "✓ Correct Model B Energy Inputs!";
+        status.className = "text-xs font-semibold text-emerald-600";
+        progressSet.add('modelB');
+      } else {
+        status.textContent = "✗ Please verify your table entries against the Model B diagram above.";
+        status.className = "text-xs font-semibold text-red-600";
+      }
+      updateProgress();
+    }
+
+    function checkQ10Scaffold() {
+      const e1 = parseFloat(document.getElementById('q10-e-step1').value);
+      const eF = parseFloat(document.getElementById('q10-e-final').value);
+      const l1 = parseFloat(document.getElementById('q10-l-step1').value);
+      const lF = parseFloat(document.getElementById('q10-l-final').value);
+      const status = document.getElementById('q10-status');
+
+      const eCorrect = (e1 === 33868) && Math.abs(eF - 70.0) <= 0.5;
+      const lCorrect = (l1 === 1374) && Math.abs(lF - 53.0) <= 0.5;
+
+      if (eCorrect && lCorrect) {
+        status.textContent = "✓ Correct! Elephant Inefficiency = 70.0%, Lion Inefficiency = 53.0%";
+        status.className = "text-xs font-semibold text-emerald-600";
+        progressSet.add('q10');
+      } else {
+        status.textContent = "✗ Check your scaffolded steps. Elephant sum = 33868, Lion sum = 1374.";
+        status.className = "text-xs font-semibold text-red-600";
+      }
+      updateProgress();
+    }
+
+    function answerQ11(choice, btn) {
+      const fb = document.getElementById('q11-feedback');
+      fb.classList.remove('hidden');
+      if (choice === 'lion') {
+        fb.className = "text-xs font-medium p-2.5 rounded bg-emerald-100 text-emerald-900 block";
+        fb.textContent = "✓ Correct! Lions digest protein/fat more efficiently than elephants digest plant cellulose, resulting in lower waste loss.";
+        progressSet.add('q11');
+      } else {
+        fb.className = "text-xs font-medium p-2.5 rounded bg-amber-100 text-amber-900 block";
+        fb.textContent = "Notice: Elephants lose ~70% to heat & waste, while lions lose ~53%. Which organism retains more energy?";
+      }
+      updateProgress();
+    }
+
+    function answerQ12(choice, btn) {
+      const fb = document.getElementById('q12-feedback');
+      fb.classList.remove('hidden');
+      if (choice === 'Biomass') {
+        fb.className = "text-xs font-medium p-2.5 rounded bg-emerald-100 text-emerald-900 block";
+        fb.textContent = "✓ Correct! Only stored Biomass (tissue) is ingested by predators.";
+        progressSet.add('q12');
+      } else {
+        fb.className = "text-xs font-medium p-2.5 rounded bg-red-100 text-red-900 block";
+        fb.textContent = "Incorrect. Heat and egested waste are dissipated to the environment.";
+      }
+      updateProgress();
+    }
+
+    function checkQ13Scaffold() {
+      const s1 = parseFloat(document.getElementById('q13-step1').value);
+      const s2 = parseFloat(document.getElementById('q13-step2').value);
+      const fin = parseFloat(document.getElementById('q13-final').value);
+      const status = document.getElementById('q13-status');
+
+      if (s1 === 45480 && s2 === 2904 && Math.abs(fin - 6.0) <= 0.3) {
+        status.textContent = "✓ Correct! 6.0% (2,904 Kcal) of grass energy is available as elephant biomass.";
+        status.className = "text-xs font-semibold text-emerald-600";
+        progressSet.add('q13');
+      } else {
+        status.textContent = "✗ Step 1 Total = 45,480 Kcal; Step 2 Biomass = 2,904 Kcal.";
+        status.className = "text-xs font-semibold text-red-600";
+      }
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = 6;
+      const current = progressSet.size;
+      const pct = Math.min(100, Math.round((current / total) * 100));
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+      document.getElementById('progress-pct').textContent = `${pct}%`;
+    }
+
+    function updateSandbox() {
+      const ingest = parseFloat(document.getElementById('sb-ingest').value);
+      const wastePct = parseFloat(document.getElementById('sb-waste').value);
+      const respPct = parseFloat(document.getElementById('sb-resp').value);
+
+      let biomassPct = 100 - (wastePct + respPct);
+      if (biomassPct < 0) biomassPct = 0;
+
+      const wasteKcal = Math.round(ingest * (wastePct / 100));
+      const respKcal = Math.round(ingest * (respPct / 100));
+      const biomassKcal = Math.round(ingest * (biomassPct / 100));
+
+      document.getElementById('sb-ingest-val').textContent = `${ingest.toLocaleString()} Kcal`;
+      document.getElementById('sb-waste-val').textContent = `${wastePct}%`;
+      document.getElementById('sb-resp-val').textContent = `${respPct}%`;
+
+      document.getElementById('sb-res-ingest').textContent = `${ingest.toLocaleString()} Kcal`;
+      document.getElementById('sb-res-waste').textContent = `${wasteKcal.toLocaleString()} Kcal`;
+      document.getElementById('sb-res-resp').textContent = `${respKcal.toLocaleString()} Kcal`;
+      document.getElementById('sb-res-biomass').textContent = `${biomassKcal.toLocaleString()} Kcal`;
+
+      document.getElementById('sb-efficiency-badge').textContent = `Stored Biomass: ${biomassPct}%`;
+
+      document.getElementById('sb-bar-waste').style.width = `${wastePct}%`;
+      document.getElementById('sb-bar-waste').textContent = `${wastePct}%`;
+
+      document.getElementById('sb-bar-resp').style.width = `${respPct}%`;
+      document.getElementById('sb-bar-resp').textContent = `${respPct}%`;
+
+      document.getElementById('sb-bar-biomass').style.width = `${biomassPct}%`;
+      document.getElementById('sb-bar-biomass').textContent = `${biomassPct}%`;
+    }
+
+    updateSandbox();
+  </script>
+</body>
+</html>
